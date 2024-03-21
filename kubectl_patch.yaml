@@ -6,13 +6,17 @@
     
     - name: Apply patch operation to an existing kubernetes object
       kubernetes.core.k8s_json_patch:
-        kind: Deployment
-        namespace: zqotd
-        name: qotd-rating
+        host: "{{ api_url }}"
+        username: "{{ ocp_username }}"
+        password: "{{ ocp_password }}"
+        validate_certs: false
+        kind: "{{ ocp_object_kind }}"
+        namespace: "{{ ocp_namespace }}"
+        name: "{{ ocp_object_name }}"
         patch:
 #          - op: add
 #            path: /metadata/labels/app
 #            value: myapp
           - op: replace
-            path: /spec/template/spec/containers/0/.env/3/.value
-            value: http://esysmvs1.ztec.dmz:19888/qotdapi/getquoteID
+            path: "{{ patch_path }}"
+            value: "{{ patch_value }}"
